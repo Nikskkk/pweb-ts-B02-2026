@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Antrian Rumah Sakit</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="dist/storage.js" defer></script>
+  <script src="dist/auth.js" defer></script>
+</head>
+<body class="login-page">
+  <main class="login-layout">
+    <section class="login-intro">
+      <p class="eyebrow">HOSPITAL QUEUE SYSTEM</p>
+      <h1>Pelayanan lebih teratur, pengalaman lebih nyaman.</h1>
+      <p>Masuk untuk mengelola layanan dan alur antrian rumah sakit.</p>
+      <div class="intro-note">
+        <span class="status-dot"></span>
+        Sistem manajemen antrian
+      </div>
+    </section>
+
+    <section class="panel login-card">
+      <div class="brand-mark" aria-hidden="true">+</div>
+      <p class="eyebrow">SELAMAT DATANG</p>
+      <h2>Masuk ke akun</h2>
+      <p class="muted">Gunakan akun pengujian yang didukung DummyJSON.</p>
+
+      <form id="loginForm">
+        <label for="username">Username</label>
+        <input id="username" name="username" autocomplete="username" required placeholder="Masukkan username">
+
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required placeholder="Masukkan password">
+
+        <div id="loginMessage" class="message hidden" role="alert"></div>
+        <button id="loginButton" type="submit" class="button button-primary button-full">Masuk</button>
+      </form>
+      <p class="helper-text">Halaman ambil antrian dan layar antrian tersedia untuk akses publik.</p>
+    </section>
+  </main>
+</body>
+</html>

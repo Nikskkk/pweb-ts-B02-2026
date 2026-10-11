@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Layar Antrean Rumah Sakit</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Arial,sans-serif;background:#082f49;color:white;text-align:center}
+    header{padding:24px;background:#075985}header h1{margin:0 0 8px}main{padding:24px;width:min(1400px,100%);margin:auto}
+    #serviceCards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;text-align:center}
+    .service-card{background:#f0f9ff;color:#0c4a6e;border-radius:16px;padding:24px;box-shadow:0 6px 20px #0002;overflow-wrap:anywhere}
+    .service-card h2{margin-top:0;font-size:clamp(20px,2.5vw,30px)}.called-number{font-size:clamp(54px,9vw,100px);font-weight:bold;color:#0369a1;margin:18px 0}
+    .service-card p{font-size:18px}footer{padding:18px;background:#0c4a6e}button{padding:12px 18px;border:0;border-radius:8px;cursor:pointer;font-weight:bold}
+  </style>
+</head>
+<body>
+  <header><h1>SISTEM ANTREAN RUMAH SAKIT</h1><div>Layar Informasi Antrean</div></header>
+  <main><div id="serviceCards">Memuat informasi antrean...</div></main>
+  <footer><button id="fullscreenBtn" type="button">Layar Penuh</button></footer>
+  <script src="dist/storage.js" defer></script>
+  <script src="dist/layar.js" defer></script>
+</body>
+</html>
