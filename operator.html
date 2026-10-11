@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Petugas | Antrean Rumah Sakit</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body{font-family:Arial,sans-serif;background:#f1f5f9;color:#0f172a;margin:0}
+    header{background:#075985;color:white;padding:22px 6%;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+    header h1{margin:0 0 6px}.wrap{width:min(1100px,92%);margin:28px auto}
+    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+    .card{background:white;padding:22px;border-radius:14px;box-shadow:0 4px 16px #0f172a0d;margin-bottom:18px}
+    .number{font-size:clamp(36px,6vw,64px);font-weight:bold;color:#0369a1;margin:12px 0;overflow-wrap:anywhere}
+    .actions{display:flex;gap:10px;flex-wrap:wrap}.actions button,button{border:0;border-radius:8px;padding:12px 16px;font-weight:bold;cursor:pointer}
+    #callNextButton{background:#0284c7;color:white}#finishButton{background:#15803d;color:white}#skipButton{background:#b45309;color:white}#logoutBtn{background:white;color:#075985}
+    .table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;background:white}th,td{text-align:left;padding:12px;border-bottom:1px solid #e2e8f0}th{background:#e0f2fe}
+    #operatorMessage{min-height:1.5em;font-weight:bold} @media(max-width:600px){header{padding:18px}.card{padding:16px}}
+  </style>
+</head>
+<body>
+  <header><div><h1>Panel Petugas Antrean</h1><div id="staffInfo">Memuat informasi petugas...</div></div><button id="logoutBtn" type="button">Logout</button></header>
+  <main class="wrap">
+    <div class="cards">
+      <section class="card"><h2>Nomor Sedang Dipanggil</h2><div id="currentNumber" class="number">---</div><p id="currentInfo">Belum ada antrean yang dipanggil.</p></section>
+      <section class="card"><h2>Antrean Berikutnya</h2><div id="nextNumber" class="number">Tidak ada</div><p>Prioritas: VIP, Disabilitas, Lansia, lalu Normal.</p></section>
+    </div>
+    <section class="card"><h2>Kontrol Antrean</h2><div class="actions"><button id="callNextButton" type="button">Panggil Berikutnya</button><button id="skipButton" type="button">Lewati</button><button id="finishButton" type="button">Selesaikan</button></div><p id="operatorMessage" role="status"></p></section>
+    <section class="card"><h2>Daftar Antrean Menunggu</h2><div class="table-wrap"><table><thead><tr><th>Nomor</th><th>Layanan</th><th>Prioritas</th><th>Waktu Ambil</th><th>Status</th></tr></thead><tbody id="ticketRows"><tr><td colspan="5">Memuat antrean...</td></tr></tbody></table></div></section>
+  </main>
+  <script src="dist/storage.js" defer></script>
+  <script src="dist/auth.js" defer></script>
+  <script src="dist/operator.js" defer></script>
+</body>
+</html>

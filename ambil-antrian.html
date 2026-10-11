@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ambil Antrean Rumah Sakit</title><link rel="stylesheet" href="css/style.css">
+  <style>
+    body{margin:0;font-family:Arial,sans-serif;background:#f1f5f9;color:#1e293b}header{background:#075985;color:white;padding:22px 7%}main{width:min(1000px,92%);margin:28px auto}.card{background:white;padding:24px;border-radius:14px;margin-bottom:22px;box-shadow:0 4px 16px #0f172a0d}label{display:block;font-weight:bold;margin:16px 0 8px}select{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:8px;background:white}button{padding:12px 16px;border:0;border-radius:8px;background:#0284c7;color:white;font-weight:bold;cursor:pointer;margin-top:18px}#ticketResult{font-size:24px;font-weight:bold;color:#0369a1;margin-top:14px}#ticketMessage{font-weight:bold}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:500px}th,td{text-align:left;padding:12px;border-bottom:1px solid #e2e8f0}th{background:#f8fafc}footer{text-align:center;padding:18px;color:#64748b}
+  </style>
+</head>
+<body>
+  <header><h1>Sistem Antrean Rumah Sakit</h1><p>Portal Pengambilan Nomor Antrean</p></header>
+  <main>
+    <section class="card"><h2>Ambil Nomor Antrean</h2><p>Pilih layanan dan prioritas antrean sesuai kebutuhan.</p>
+      <form id="ticketForm"><label for="serviceSelect">Jenis Layanan</label><select id="serviceSelect" required><option value="">Memuat layanan...</option></select>
+        <label for="prioritySelect">Prioritas Antrean</label><select id="prioritySelect" required><option value="Normal">Normal</option><option value="Lansia">Lansia</option><option value="Disabilitas">Disabilitas</option><option value="VIP">VIP</option></select>
+        <button type="submit">Ambil Nomor Antrean</button>
+      </form><p id="ticketMessage" role="status"></p><div id="ticketResult" aria-live="polite"></div>
+    </section>
+    <section class="card"><h2>Informasi Antrean</h2><div class="table-wrap"><table><thead><tr><th>Nomor</th><th>Layanan</th><th>Prioritas</th><th>Status</th></tr></thead><tbody id="publicTicketRows"><tr><td colspan="4">Memuat antrean...</td></tr></tbody></table></div></section>
+  </main><footer>Sistem Informasi Antrean Rumah Sakit</footer>
+  <script src="dist/storage.js" defer></script><script src="dist/ambil-antrian.js" defer></script>
+</body>
+</html>

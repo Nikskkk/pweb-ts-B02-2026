@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Admin | Antrian Rumah Sakit</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="dist/storage.js" defer></script>
+  <script src="dist/auth.js" defer></script>
+  <script src="dist/admin.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html"><span class="brand-mark small">+</span><span>Antrian<span class="brand-light">RS</span></span></a>
+    <div class="topbar-right">
+      <div class="user-chip">
+        <span class="avatar" id="userInitial">A</span>
+        <span><strong id="activeUser">Admin</strong><small id="activeRole">Administrator</small></span>
+      </div>
+      <button id="logoutButton" class="button button-outline" type="button">Logout</button>
+    </div>
+  </header>
+
+  <main class="page-container">
+    <section class="page-heading">
+      <div>
+        <p class="eyebrow">PANEL ADMINISTRATOR</p>
+        <h1>Dashboard Antrian</h1>
+        <p class="muted">Kelola layanan rumah sakit dan penerbitan tiket.</p>
+      </div>
+      <span class="date-pill" id="todayLabel">Sistem Antrian</span>
+    </section>
+
+    <section class="stats-grid">
+      <article class="stat-card">
+        <span class="stat-label">Total jenis layanan</span>
+        <strong id="totalServices">0</strong>
+        <span class="stat-foot">Seluruh layanan terdaftar</span>
+      </article>
+      <article class="stat-card">
+        <span class="stat-label">Layanan aktif</span>
+        <strong id="activeServices">0</strong>
+        <span class="stat-foot">Dapat dipilih pengunjung</span>
+      </article>
+      <article class="stat-card">
+        <span class="stat-label">Tiket menunggu</span>
+        <strong id="waitingTickets">0</strong>
+        <span class="stat-foot">Belum dipanggil</span>
+      </article>
+    </section>
+
+    <section class="content-grid">
+      <article class="panel">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">DATA MASTER</p>
+            <h2>Jenis Antrian</h2>
+          </div>
+        </div>
+        <form id="serviceForm" class="form-grid">
+          <div>
+            <label for="serviceCode">Kode layanan</label>
+            <input id="serviceCode" name="code" maxlength="1" required placeholder="Contoh: A">
+            <small class="field-hint">Satu huruf kapital, A–Z.</small>
+          </div>
+          <div>
+            <label for="serviceName">Nama layanan</label>
+            <input id="serviceName" name="name" maxlength="60" required placeholder="Contoh: Poli Umum">
+          </div>
+          <div class="form-actions">
+            <button class="button button-primary" type="submit">Tambah layanan</button>
+          </div>
+        </form>
+        <div id="adminMessage" class="message hidden" role="status"></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Kode</th><th>Nama layanan</th><th>Status</th><th>Aksi</th></tr></thead>
+            <tbody id="serviceTableBody"></tbody>
+          </table>
+        </div>
+        <p id="emptyServices" class="empty-state hidden">Belum ada layanan. Tambahkan layanan pertama.</p>
+      </article>
+
+      <article class="panel">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">PENERBITAN MANUAL</p>
+            <h2>Buat Tiket</h2>
+          </div>
+        </div>
+        <p class="muted">Gunakan fitur ini untuk membantu pengunjung yang tidak dapat mengambil tiket sendiri.</p>
+        <form id="manualTicketForm">
+          <label for="manualService">Jenis layanan</label>
+          <select id="manualService" name="service" required>
+            <option value="">Pilih layanan aktif</option>
+          </select>
+
+          <label for="manualPriority">Tingkat prioritas</label>
+          <select id="manualPriority" name="priority" required>
+            <option value="Normal">Normal</option>
+            <option value="Lansia">Lansia</option>
+            <option value="Disabilitas">Disabilitas</option>
+            <option value="VIP">VIP</option>
+          </select>
+          <button class="button button-primary button-full" type="submit">Terbitkan tiket</button>
+        </form>
+        <div id="ticketMessage" class="message hidden" role="status"></div>
+        <div id="ticketResult" class="ticket-result hidden">
+          <span class="muted">Nomor tiket berhasil dibuat</span>
+          <strong id="createdTicketNumber">A-001</strong>
+          <span id="createdTicketDetails"></span>
+        </div>
+        <div class="danger-zone">
+          <h3>Reset antrian</h3>
+          <p class="muted">Menghapus seluruh tiket dan mengembalikan penghitung nomor ke awal. Jenis layanan tidak dihapus.</p>
+          <button id="resetQueueButton" class="button button-danger" type="button">Reset seluruh antrian</button>
+        </div>
+      </article>
+    </section>
+    <footer class="footer-note">AntrianRS · Praktikum Pemrograman Web · Native HTML, CSS, TypeScript</footer>
+  </main>
+</body>
+</html>
