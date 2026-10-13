@@ -25,6 +25,9 @@ function setLoginLoading(loading) {
 function normalizeRole(role) {
     return (role ?? "").trim().toLowerCase();
 }
+function isSupportedRole(role) {
+    return ["admin", "moderator", "user"].includes(normalizeRole(role));
+}
 async function fetchUsers(url) {
     const response = await fetch(url);
     if (!response.ok) {
@@ -99,7 +102,7 @@ async function handleLogin(event) {
             window.location.replace("index.html");
         }
         else {
-            window.location.replace("operator.html");
+            window.location.replace("ambil-antrian.html");
         }
     }
     catch (error) {
@@ -117,18 +120,24 @@ async function handleLogin(event) {
 }
 function requireLogin() {
     const session = getSession();
-    if (!session || !session.token || !session.role) {
+    if (!session ||
+        typeof session.token !== "string" ||
+        !session.token.trim() ||
+        !isSupportedRole(session.role)) {
+        clearSession();
         window.location.replace("login.html");
         return null;
     }
+    session.role = normalizeRole(session.role);
     return session;
 }
 function requireRole(allowedRoles) {
     const session = requireLogin();
     if (!session)
         return null;
-    const role = session.role.trim().toLowerCase();
-    if (!allowedRoles.map(item => item.toLowerCase()).includes(role)) {
+    const role = normalizeRole(session.role);
+    if (!allowedRoles.map(item => normalizeRole(item)).includes(role)) {
+        clearSession();
         window.location.replace("login.html");
         return null;
     }
@@ -149,7 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
             if (role === "user") {
-                window.location.replace("operator.html");
+                window.location.replace("ambil-antrian.html");
                 return;
             }
         }

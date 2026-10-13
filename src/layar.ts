@@ -59,6 +59,16 @@ function renderQueueScreen(): void {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  const session = requireLogin();
+  if (!session) return;
+
+  const sessionName = screenElement<HTMLElement>("sessionName");
+  if (sessionName) {
+    sessionName.textContent = `${session.firstName} (${session.role})`;
+  }
+  screenElement<HTMLButtonElement>("logoutButton")
+    ?.addEventListener("click", logout);
+
   screenElement<HTMLButtonElement>("fullscreenBtn")
     ?.addEventListener("click", async () => {
       try {
@@ -67,8 +77,11 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
           await document.exitFullscreen();
         }
-      } catch {
-        // Browser mungkin menolak fullscreen jika tidak diizinkan.
+      } catch (error) {
+        const message = error instanceof Error
+          ? error.message
+          : "Mode layar penuh tidak tersedia.";
+        console.error("Fullscreen gagal:", message);
       }
     });
 

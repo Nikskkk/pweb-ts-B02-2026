@@ -34,14 +34,7 @@ function renderOperator(): void {
 
   ticketRows.replaceChildren();
 
-  const waitingTickets = tickets
-    .filter(ticket => ticket.status === "Menunggu")
-    .sort((a, b) => {
-      const difference =
-        getPriorityRank(a.priority) - getPriorityRank(b.priority);
-
-      return difference || a.createdAt - b.createdAt;
-    });
+  const waitingTickets = getWaitingTickets();
 
   if (waitingTickets.length === 0) {
     const row = ticketRows.insertRow();
@@ -78,69 +71,37 @@ function operatorMessage(text: string, error = false): void {
 }
 
 function callNextTicket(): void {
-  const tickets = getQueueTickets();
+  const ticket = callNextQueueTicket();
 
-  // Tiket yang sedang dipanggil diselesaikan terlebih dahulu.
-  tickets.forEach(ticket => {
-    if (ticket.status === "Dipanggil") {
-      ticket.status = "Selesai";
-      ticket.updatedAt = Date.now();
-    }
-  });
-
-  const next = getNextWaitingTicket();
-
-  if (!next) {
-    saveQueueTickets(tickets);
+  if (!ticket) {
     operatorMessage("Tidak ada antrean yang menunggu.", true);
     renderOperator();
     return;
   }
 
-  const ticket = tickets.find(item => item.id === next.id);
-
-  if (!ticket) return;
-
-  ticket.status = "Dipanggil";
-  ticket.updatedAt = Date.now();
-
-  saveQueueTickets(tickets);
   operatorMessage(`Memanggil nomor ${ticket.number}.`);
   renderOperator();
 }
 
 function finishCurrentTicket(): void {
-  const tickets = getQueueTickets();
-  const current = tickets.find(ticket => ticket.status === "Dipanggil");
-
-  if (!current) {
+  const ticket = finishCurrentQueueTicket();
+  if (!ticket) {
     operatorMessage("Tidak ada tiket yang sedang dipanggil.", true);
     return;
   }
 
-  current.status = "Selesai";
-  current.updatedAt = Date.now();
-
-  saveQueueTickets(tickets);
-  operatorMessage(`Antrean ${current.number} telah selesai.`);
+  operatorMessage(`Antrean ${ticket.number} telah selesai.`);
   renderOperator();
 }
 
 function skipCurrentTicket(): void {
-  const tickets = getQueueTickets();
-  const current = tickets.find(ticket => ticket.status === "Dipanggil");
-
-  if (!current) {
+  const ticket = skipCurrentQueueTicket();
+  if (!ticket) {
     operatorMessage("Tidak ada tiket yang sedang dipanggil.", true);
     return;
   }
 
-  current.status = "Dilewati";
-  current.skippedAt = Date.now();
-  current.updatedAt = Date.now();
-
-  saveQueueTickets(tickets);
-  operatorMessage(`Antrean ${current.number} dilewati.`);
+  operatorMessage(`Antrean ${ticket.number} dilewati.`);
   renderOperator();
 }
 
@@ -148,8 +109,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const session = requireRole(["admin", "moderator"]);
   if (!session) return;
 
-  operatorElement("staffInfo")!.textContent =
-    `Petugas: ${session.firstName} (${session.role})`;
+  const staffInfo = operatorElement("staffInfo");
+  if (staffInfo) {
+    staffInfo.textContent = `Petugas: ${session.firstName} (${session.role})`;
+  }
 
   operatorElement<HTMLButtonElement>("callNextButton")
     ?.addEventListener("click", callNextTicket);

@@ -59,6 +59,10 @@ function normalizeRole(role?: string): string {
 return (role ?? "").trim().toLowerCase();
 }
 
+function isSupportedRole(role?: string): role is "admin" | "moderator" | "user" {
+  return ["admin", "moderator", "user"].includes(normalizeRole(role));
+}
+
 async function fetchUsers(url: string): Promise<UserReference[]> {
 const response = await fetch(url);
 
@@ -177,7 +181,7 @@ saveSession(session);
 if (role === "admin" || role === "moderator") {
   window.location.replace("index.html");
 } else {
-  window.location.replace("operator.html");
+  window.location.replace("ambil-antrian.html");
 }
 
 
@@ -204,11 +208,18 @@ setLoginLoading(false);
 function requireLogin(): AuthSession | null {
 const session = getSession();
 
-if (!session || !session.token || !session.role) {
+if (
+  !session ||
+  typeof session.token !== "string" ||
+  !session.token.trim() ||
+  !isSupportedRole(session.role)
+) {
+clearSession();
 window.location.replace("login.html");
 return null;
 }
 
+session.role = normalizeRole(session.role);
 return session;
 }
 
@@ -216,9 +227,10 @@ function requireRole(allowedRoles: string[]): AuthSession | null {
 const session = requireLogin();
 if (!session) return null;
 
-const role = session.role.trim().toLowerCase();
+const role = normalizeRole(session.role);
 
-if (!allowedRoles.map(item => item.toLowerCase()).includes(role)) {
+if (!allowedRoles.map(item => normalizeRole(item)).includes(role)) {
+clearSession();
 window.location.replace("login.html");
 return null;
 }
@@ -249,7 +261,7 @@ if (session?.token && session.role) {
   }
 
   if (role === "user") {
-    window.location.replace("operator.html");
+    window.location.replace("ambil-antrian.html");
     return;
   }
 }

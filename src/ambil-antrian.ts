@@ -54,14 +54,27 @@ function renderPublicTickets(): void {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  if (!requireLogin()) return;
+
   const form = publicElement<HTMLFormElement>("ticketForm");
   const select = publicElement<HTMLSelectElement>("serviceSelect");
   const priority = publicElement<HTMLSelectElement>("prioritySelect");
   const message = publicElement<HTMLElement>("ticketMessage");
   const result = publicElement<HTMLElement>("ticketResult");
+  const submitButton = form?.querySelector<HTMLButtonElement>("button[type='submit']");
+  const sessionName = publicElement<HTMLElement>("sessionName");
+
+  const session = getSession();
+  if (sessionName && session) {
+    sessionName.textContent = `${session.firstName} (${session.role})`;
+  }
+  publicElement<HTMLButtonElement>("logoutButton")?.addEventListener("click", logout);
 
   renderPublicServices();
   renderPublicTickets();
+  if (submitButton) {
+    submitButton.disabled = !select?.options.length || select.options.length <= 1;
+  }
 
   form?.addEventListener("submit", event => {
     event.preventDefault();
@@ -82,6 +95,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       renderPublicServices();
       renderPublicTickets();
+      if (submitButton) {
+        submitButton.disabled = !select?.value && select?.options.length === 1;
+      }
     } catch (error) {
       message.textContent = error instanceof Error
         ? error.message
@@ -99,5 +115,8 @@ document.addEventListener("DOMContentLoaded", () => {
   window.setInterval(() => {
     renderPublicServices();
     renderPublicTickets();
+    if (submitButton) {
+      submitButton.disabled = !select?.value && select?.options.length === 1;
+    }
   }, 2500);
 });

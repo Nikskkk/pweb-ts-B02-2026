@@ -32,7 +32,7 @@ Nilai status:
 Prioritas:
 `Normal`, `Lansia`, `Disabilitas`, `VIP`
 
-`src/storage.ts` menggunakan fungsi `createQueueTicket()` bersama. Koordinasikan agar Orang 2 menggunakan kontrak dan penghitung tiket yang sama. Karena TypeScript dikompilasi dengan `module: "none"`, fungsi yang dipakai lintas file tersedia sebagai fungsi global pada script yang dimuat berurutan; jangan mengganti konfigurasi modul tanpa memperbarui HTML dan kode.
+`src/queue.ts` menggunakan fungsi `createQueueTicket()` bersama dengan penyimpanan yang didefinisikan di `src/storage.ts`. Koordinasikan agar Orang 2 menggunakan kontrak dan penghitung tiket yang sama. Karena TypeScript dikompilasi dengan `module: "none"`, fungsi yang dipakai lintas file tersedia sebagai fungsi global pada script yang dimuat berurutan; pastikan HTML memuat `storage.js` sebelum `queue.js`, lalu halaman sebelum fungsi queue dipakai.
 
 ## Batasan penting
 Role dari API digunakan sesuai respons server. API DummyJSON tidak menjamin setiap akun uji mempunyai role `admin`, `moderator`, atau `user` sesuai kebutuhan tugas. Uji respons akun dan diskusikan mekanisme role yang diperbolehkan dengan asisten praktikum. Jangan menganggap role dari input pengguna sebagai autentikasi yang sah.

@@ -42,13 +42,25 @@ function renderPublicTickets() {
     });
 }
 document.addEventListener("DOMContentLoaded", () => {
+    if (!requireLogin())
+        return;
     const form = publicElement("ticketForm");
     const select = publicElement("serviceSelect");
     const priority = publicElement("prioritySelect");
     const message = publicElement("ticketMessage");
     const result = publicElement("ticketResult");
+    const submitButton = form?.querySelector("button[type='submit']");
+    const sessionName = publicElement("sessionName");
+    const session = getSession();
+    if (sessionName && session) {
+        sessionName.textContent = `${session.firstName} (${session.role})`;
+    }
+    publicElement("logoutButton")?.addEventListener("click", logout);
     renderPublicServices();
     renderPublicTickets();
+    if (submitButton) {
+        submitButton.disabled = !select?.options.length || select.options.length <= 1;
+    }
     form?.addEventListener("submit", event => {
         event.preventDefault();
         if (!select?.value || !priority || !message || !result)
@@ -61,6 +73,9 @@ document.addEventListener("DOMContentLoaded", () => {
             message.style.color = "#15803d";
             renderPublicServices();
             renderPublicTickets();
+            if (submitButton) {
+                submitButton.disabled = !select?.value && select?.options.length === 1;
+            }
         }
         catch (error) {
             message.textContent = error instanceof Error
@@ -76,5 +91,8 @@ document.addEventListener("DOMContentLoaded", () => {
     window.setInterval(() => {
         renderPublicServices();
         renderPublicTickets();
+        if (submitButton) {
+            submitButton.disabled = !select?.value && select?.options.length === 1;
+        }
     }, 2500);
 });
